@@ -1,0 +1,51 @@
+<!--
+Copygright 2016 Google Inc. All rights reserved.
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to writing, software distributed
+under the License is distributed on a "AS IS" BASIS, WITHOUT WARRANTIES OR
+CONDITIONS OF ANY KIND, either express or implied.
+
+See the License for the specific language governing permissions and 
+limitations under the License.
+-->
+
+<!doctype html>
+<html ng-app>
+
+<head>
+  <title>Events</title>
+  <script src='/angular.min.js'></script>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <link href='http://fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
+  <script src='/script.js'></script>
+  <link rel='stylesheet' href='/style.css'>
+</head>
+
+<body>
+<h1>Events</h1>
+<div class="content" ng-controller='EventsCtrl'>
+
+  <div>
+    <div ng-repeat='e in events' class="event">
+        <span class="title">{{e.title}}</span>
+        <p class="header"><span class="weather">{{e.weather}}</span> in <span class="location">{{e.location}}</span></p>
+        <span class="date">{{e.date}}</span>
+        <p class="description">{{e.description}}&nbsp;</p>
+    </div>
+  </div>
+
+  <form>
+    <input type='text' placeholder='title' ng-model='newEvent.title'>
+    <input type='date' ng-model='newEvent.date'>
+    <input type='text' placeholder='location' ng-model='newEvent.location'>
+    <textarea placeholder='description' ng-model='newEvent.description'></textarea>
+    <button ng-click='addEvent()'>New Event</button>
+  </form>
+
+</div>
+</body>
+</html>

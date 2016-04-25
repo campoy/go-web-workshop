@@ -1,0 +1,40 @@
+{
+    "coord": {
+        "lon": 19.04,
+        "lat": 47.5
+    },
+    "weather": [
+        {
+            "id": 800,
+            "main": "Clear",
+            "description": "clear sky",
+            "icon": "01n"
+        }
+    ],
+    "base": "cmc stations",
+    "main": {
+        "temp": 277,
+        "pressure": 1007,
+        "humidity": 93,
+        "temp_min": 275.37,
+        "temp_max": 278.15
+    },
+    "wind": {
+        "speed": 1.5
+    },
+    "clouds": {
+        "all": 0
+    },
+    "dt": 1461611729,
+    "sys": {
+        "type": 1,
+        "id": 5724,
+        "message": 0.0103,
+        "country": "HU",
+        "sunrise": 1461555317,
+        "sunset": 1461606530
+    },
+    "id": 3054643,
+    "name": "Budapest",
+    "cod": 200
+}

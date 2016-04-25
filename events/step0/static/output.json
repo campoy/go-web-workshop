@@ -1,0 +1,20 @@
+[
+    {
+        "title": "Craft Conf",
+        "description": "CRAFT is about software craftsmanship, which tools, methods, practices should be part of the toolbox of a modern developer and company.",
+        "date": "2016-04-26T00:00:00Z",
+        "location": "Budapest"
+    },
+    {
+        "title": "Google I/O",
+        "description": "Google I/O is for developers - the creative coders who are building what's next. Each year, we explore the latest in tech, mobile \u0026 beyond.",
+        "date": "2016-04-28T00:00:00Z",
+        "location": "Mountain View"
+    },
+    {
+        "title": "GopherCon China",
+        "description": "GOPHER'S BIGGEST PARTY",
+        "date": "2016-05-18T00:00:00Z",
+        "location": "Beijing"
+    }
+]
