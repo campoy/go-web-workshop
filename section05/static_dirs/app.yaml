@@ -1,0 +1,16 @@
+runtime: go
+api_version: go1
+
+handlers:
+# requests starting with /api/ are handled by the Go app.
+- url: /api/.*
+  script: _go_app
+
+# if the path is empty show index.html.
+- url: /
+  static_files: static/index.html
+  upload: static/index.html
+
+# otherwise try to find it in the static directory.
+- url: /
+  static_dir: static

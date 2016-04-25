@@ -1,0 +1,11 @@
+runtime: go
+api_version: go1
+
+handlers:
+# requests with empty paths are shown the html page.
+- url: /
+  static_files: hello.html
+  upload: hello.html
+# requests with the /api/ path are handled by the Go app.
+- url: /api/.*
+  script: _go_app
