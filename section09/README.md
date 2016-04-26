@@ -29,10 +29,10 @@ There's two main operations you can do with memcache:
 We will use the `memcache.Set` function:
 
 ```go
-func Set(c appengine.Context, item *Item) error
+func Set(c context.Context, item *Item) error
 ```
 
-The first parameter is an `appengine.Context`, as usual, and the second one is
+The first parameter is an `context.Context`, as usual, and the second one is
 the item we want to store. Let's concentrate on three fields of the
 `memcache.Item` type for now:
 
@@ -75,7 +75,7 @@ if err != nil {
 To retrieve an item from Memcache we use the `memcache.Get` function:
 
 ```go
-func Get(c appengine.Context, key string) (*Item, error)
+func Get(c context.Context, key string) (*Item, error)
 ```
 
 Given a key `memcache.Get` returns the corresponding item if any, containing the

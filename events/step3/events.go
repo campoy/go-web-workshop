@@ -49,8 +49,8 @@ type Weather struct {
 
 func init() {
 	r := mux.NewRouter()
-	r.HandleFunc("/api/events", listEvents).Methods("GET")
-	r.HandleFunc("/api/events", addEvent).Methods("POST")
+	r.HandleFunc("/api/events", listEvents).Methods(http.MethodGet)
+	r.HandleFunc("/api/events", addEvent).Methods(http.MethodPost)
 	http.Handle("/", r)
 }
 
@@ -69,7 +69,7 @@ func listEvents(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// TODO: iterate over all the events and fetch the weather for its location.
-	// If that operation fails just log the error and continue with the next events.
+	// If that operation fails just log the error and continue with the next event.
 	// If it doesn't fail modify the weather in the event.
 
 	w.Header().Set("Content-Type", "application/json")
