@@ -7,7 +7,7 @@ how it is the perfect companion to your App Engine apps.
 
 Cloud Datastore is a non relational database that is fully managed by Google so
 you don't need to worry about scaling, resizing, patches, or any other kind of
-mantainance.
+maintenance.
 
 <div style="text-align:center">
   <img src="http://php-gds-demo.appspot.com/img/datastore-logo.png">
