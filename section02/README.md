@@ -241,10 +241,10 @@ func getProduct(w http.ResponseWriter, r *http.Request) {
 func main() {
 	r := mux.NewRouter()
 	// match only GET requests on /product/
-	r.HandleFunc("/product/", listProducts).Methods("GET")
+	r.HandleFunc("/product/", listProducts).Methods(http.MethodGet)
 
 	// match only POST requests on /product/
-	r.HandleFunc("/product/", addProduct).Methods("POST")
+	r.HandleFunc("/product/", addProduct).Methods(http.MethodPost)
 
 	// match GET regardless of productID
 	r.HandleFunc("/product/{productID}", getProduct)

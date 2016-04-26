@@ -32,7 +32,12 @@ The `http.Request` type has a method `FormValue` with the following docs:
 
     func (r *Request) FormValue(key string) string
 
-    FormValue returns the first value for the named component of the query. POST and PUT body parameters take precedence over URL query string values. FormValue calls ParseMultipartForm and ParseForm if necessary and ignores any errors returned by these functions. If key is not present, FormValue returns the empty string. To access multiple values of the same key, call ParseForm and then inspect Request.Form directly.
+    FormValue returns the first value for the named component of the query. 
+    POST and PUT body parameters take precedence over URL query string values.
+    FormValue calls ParseMultipartForm and ParseForm if necessary and ignores any
+    errors returned by these functions. If key is not present, FormValue returns
+    the empty string. To access multiple values of the same key, call ParseForm 
+    and then inspect Request.Form directly.
 
 That's easy! So if we want to obtain the value of a parameter `q` in the URL `/hello?msg=world`
 we can write the next program.
@@ -150,7 +155,7 @@ You can set headers in the response with the `Header` function in the `ResponseW
 the method `Set`. We can then set the content type in our `ResponseWriter` named `w` like this.
 
 ```go
-r.Header().Set("Content-Type", "text/plain")
+w.Header().Set("Content-Type", "text/plain")
 ```
 
 ### Avoiding repetition

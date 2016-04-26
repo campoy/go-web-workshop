@@ -61,8 +61,8 @@ var (
 
 func init() {
 	r := mux.NewRouter()
-	r.HandleFunc("/api/events", listEvents).Methods("GET")
-	r.HandleFunc("/api/events", addEvent).Methods("POST")
+	r.HandleFunc("/api/events", listEvents).Methods(http.MethodGet)
+	r.HandleFunc("/api/events", addEvent).Methods(http.MethodPost)
 	http.Handle("/", r)
 }
 

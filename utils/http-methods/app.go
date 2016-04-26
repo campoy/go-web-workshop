@@ -34,11 +34,11 @@ type value struct{ Value string }
 
 func init() {
 	r := mux.NewRouter()
-	r.HandleFunc("/", getNamespaces).Methods("GET")
-	r.Handle("/{namespace}/", withNamespace{getAll, false}).Methods("GET")
-	r.Handle("/{namespace}/{key}", withNamespace{getOne, false}).Methods("GET")
-	r.Handle("/{namespace}/{key}", withNamespace{put, true}).Methods("PUT")
-	r.Handle("/{namespace}/{key}", withNamespace{delete, false}).Methods("DELETE")
+	r.HandleFunc("/", getNamespaces).Methods(http.MethodGet)
+	r.Handle("/{namespace}/", withNamespace{getAll, false}).Methods(http.MethodGet)
+	r.Handle("/{namespace}/{key}", withNamespace{getOne, false}).Methods(http.MethodGet)
+	r.Handle("/{namespace}/{key}", withNamespace{put, true}).Methods(http.MethodPut)
+	r.Handle("/{namespace}/{key}", withNamespace{delete, false}).Methods(http.MethodDelete)
 	http.Handle("/", r)
 }
 

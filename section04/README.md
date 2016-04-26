@@ -87,9 +87,9 @@ This means that simply running `http.Get` to fetch some remote page will fail. T
 How do we fix it? Meet the `urlfetch` package!
 
 The `urlfetch` package is defined in [google.golang.org/appengine/urlfetch](https://google.golang.org/appengine/urlfetch),
-and to obtain a new HTTP client we call the `Client` function that requires an `appengine.Context`.
+and to obtain a new HTTP client we call the `Client` function that requires an `context.Context`.
 
-To create a new `appengine.Context` we need to call `appengine.NewContext` and pass an HTTP request.
+To create a new `context.Context` we need to call `appengine.NewContext` and pass an HTTP request.
 
 ```go
 package app
@@ -122,7 +122,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
-We will see how the `appengine.Context` is used for basically everything on App Engine.
+We will see how the `context.Context` is used for basically everything on App Engine.
 
 ### Write your app.yaml
 

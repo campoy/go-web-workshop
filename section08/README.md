@@ -12,10 +12,10 @@ package provided by the App Engine runtime:
 The most important function of the `urlfetch` package is `Client`:
 
 ```go
-func Client(context appengine.Context) *http.Client
+func Client(context context.Context) *http.Client
 ```
 
-So given an `appengine.Context` you get an HTTP client, and then you can start
+So given an `context.Context` you get an HTTP client, and then you can start
 from there. So if you wanted to fetch Google's home page you would do:
 
 ```go

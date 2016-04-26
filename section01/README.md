@@ -109,7 +109,7 @@ import (
 )
 
 func main() {
-	req, err := http.NewRequest("GET", "https://golang.org", nil)
+	req, err := http.NewRequest(http.MethodGet, "https://golang.org", nil)
 	if err != nil {
 		log.Fatalf("could not create request: %v", err)
 	}
