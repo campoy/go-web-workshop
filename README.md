@@ -5,9 +5,9 @@ Well, this workshop is for gophers, or people that use the [Go programming langu
 But fear not if you've never written any Go before!
 I'd recommend you learn the basics for the language first with the [Go tour][2].
 
-This workshop has been ran a couple of times with a leading instructor, but the goal of
+This workshop has been run a couple of times with an instructor leading. The goal of
 this repo is to make it as easy as possible for individuals to follow the content
-by themselves. If you get stuck at any point feel free to file issues asking questions.
+by themselves. If you get stuck at any point, feel free to file issues asking questions.
 
 ## Setting up your workspace
 
