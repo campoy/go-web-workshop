@@ -54,7 +54,7 @@ Some of the places where gophers tend to hang out are:
 
 - [The Go Forum](https://forum.golangbridge.org/)
 - #go-nuts IRC channel at [Freenode](https://freenode.net/)
-- Gophers’ community on [Slack](https://gophers.slack.com/messages/general/) (signup [here](https://bit.ly/go-slack-signup) for an account).
+- Gophers’ community on [Slack](https://gophers.slack.com/messages/general/) (signup [here](https://invite.slack.golangbridge.org/) for an account).
 - [@golang](https://twitter.com/golang) and [#golang](https://twitter.com/search?q=%23golang) on Twitter.
 - [Go+ community](https://plus.google.com/u/1/communities/114112804251407510571) on Google Plus.
 - [Go user meetups](https://go-meetups.appspot.com/)
