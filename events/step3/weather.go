@@ -27,7 +27,7 @@ const (
 func weather(ctx context.Context, location string) (*Weather, error) {
 	// TODO: use apiURL above to fetch the weather for the location
 	// You will need to create a map of URL parameters, known as url.Values from the "net/url" package.
-	// Set the parameter "APP_ID" to the environment variable WEATHER_API_KEY defined in your app.yaml.
+	// Set the parameter "APPID" to the environment variable WEATHER_API_KEY defined in your app.yaml.
 	// To access environment variables use the Getenv method from the os package.
 	// Then set the parameter "q" to the location.
 
