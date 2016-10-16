@@ -61,7 +61,7 @@ the body of the `http.Request`.
 Note that even though the type of `Body` in `http.Request` is `io.ReadCloser` the body will be automatically
 closed at the end of the execution of the http handler, so don't worry about it.
 
-There's many ways we can read from an `io.Reader`, but for now you can use `io.ReadAll`,
+There's many ways we can read from an `io.Reader`, but for now you can use `ioutil.ReadAll`,
 which returns a `[]byte` and an `error` if something goes wrong.
 
 [embedmd]:# (examples/handlers/main.go /func bodyHandler/ /^}/)
