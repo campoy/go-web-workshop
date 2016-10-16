@@ -175,7 +175,7 @@ Try it:
 
 	$ go run main.go
 
-And then visit https://127.0.0.1/hello.
+And then visit http://127.0.0.1:8080/hello.
 
 ### Exercise Bye, web
 
