@@ -119,7 +119,7 @@ p := Person{
 
 item := &memcache.Item{
 	Key:        "last_person",
-	Value:      p,
+	Object:      p,
 	Expiration: 1 * time.Hour,
 }
 
