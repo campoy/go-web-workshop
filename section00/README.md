@@ -19,7 +19,7 @@ If you do not it's probably time to check out the [Go tour][1].
 
 At this point you can paste the code above into a file named `main.go`.
 This file should be anywhere in your `$GOPATH`.
-I will assume it is inside of a folder with path `$GOPATH/hello/main.go`.
+I will assume it is inside of a folder with path `$GOPATH/src/hello/main.go`.
 
 You can now run the code in a couple of ways. From the directory containing `main.go` run:
 
