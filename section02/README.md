@@ -241,7 +241,7 @@ func main() {
 ```
 
 Gorilla also provides packages for session management, cookies, etc.
-Have a look at the [documentation](https://www.gorillatoolkit.org/).
+Have a look at the [documentation](www.gorillatoolkit.org/).
 
 #### Exercise Hello, {you}
 
