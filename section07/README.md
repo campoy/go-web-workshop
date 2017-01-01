@@ -7,7 +7,7 @@ how it is the perfect companion to your App Engine apps.
 
 Cloud Datastore is a non relational database that is fully managed by Google so
 you don't need to worry about scaling, resizing, patches, or any other kind of
-mantainance.
+maintenance.
 
 <div style="text-align:center">
   <img src="https://php-gds-demo.appspot.com/img/datastore-logo.png">
@@ -136,7 +136,7 @@ func NewIncompleteKey(c appengine.Context, kind string, parent *Key) *Key
 
 Note that there's no `stringID` or `intID` in this function, as the final value
 of the key will be decided once we put the value in the datastore. The final
-value can be obtained by using the the returned key by `datastore.Put`.
+value can be obtained by using the returned key by `datastore.Put`.
 
 ```go
 func handler(w http.ResponseWriter, r *http.Request) {

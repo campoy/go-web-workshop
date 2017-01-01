@@ -65,7 +65,7 @@ To declare a new variable of type `Person` we have two options:
 	// output: main.Person{Name:"", AgeYears:0}
 ```
 
-- or use the `:=` operator and intialize the fields.
+- or use the `:=` operator and initialize the fields.
 
 ```go
 	p := Person{Name: "gopher", AgeYears: 5}

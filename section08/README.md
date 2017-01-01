@@ -54,7 +54,7 @@ decoding, it is time to tackle [step 3](../events/step3/README.md).
 
 # Congratulations!
 
-You are now capable of making your App Engine applicatino communicate with the
+You are now capable of making your App Engine application communicate with the
 rest of the web using HTTP requests thanks to the `urlfetch` package!
 
 But is it really a good idea to fetch external resources every time we need to

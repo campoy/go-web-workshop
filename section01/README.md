@@ -36,7 +36,7 @@ func main() {
 [source code](examples/get.go)
 
 This program will send a GET HTTP request to the Go homepage and will print the status code of the response,
-unless something goes wrong in which case it will log the error and stop the exeuction of the program.
+unless something goes wrong in which case it will log the error and stop the execution of the program.
 
 Try changing the value of the URL to see what other codes you're able to get.
 Some ideas you could try:
