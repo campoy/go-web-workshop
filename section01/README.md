@@ -78,7 +78,7 @@ and the equivalent helper functions:
 What if you want to use some other methods? Meet the [`Do`](https://golang.org/pkg/net/http#Client.Do) method.
 This method receives a pointer to `http.Request` as parameters and return a `http.Response` and an `error`.
 
-The `Request` method provides all the expressivity we need to send any kind of HTTP requests.
+The `Do` method provides all the expressivity we need to send any kind of HTTP requests.
 
 For instance, we can create the equivalent request to the original `get.go` program:
 
