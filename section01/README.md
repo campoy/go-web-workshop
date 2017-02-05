@@ -6,7 +6,7 @@ The `net/http` package provides a series of functions and types to help you send
 The most important types are:
 
 - the [Client](https://golang.org/pkg/net/http#Client)
-- the [Request](https://golang.org/pkg/net/http#Client)
+- the [Request](https://golang.org/pkg/net/http#Request)
 - the [Response](https://golang.org/pkg/net/http#Response)
 
 We'll get to see how those types work in a minute.
