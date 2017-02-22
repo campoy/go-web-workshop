@@ -44,7 +44,7 @@ func weather(ctx context.Context, location string) (*Weather, error) {
 
 	// Prepare the request to the weather API.
 	values := make(url.Values)
-	values.Set("APP_ID", os.Getenv("WEATHER_API_KEY"))
+	values.Set("APPID", os.Getenv("WEATHER_API_KEY"))
 	values.Set("q", location)
 	url := apiURL + "?" + values.Encode()
 
