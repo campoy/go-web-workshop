@@ -34,11 +34,11 @@ type value struct{ Value string }
 
 func init() {
 	r := mux.NewRouter()
-	r.HandleFunc("/", getNamespaces).Methods("GET")
-	r.Handle("/{namespace}/", withNamespace{getAll, false}).Methods("GET")
-	r.Handle("/{namespace}/{key}", withNamespace{getOne, false}).Methods("GET")
-	r.Handle("/{namespace}/{key}", withNamespace{put, true}).Methods("PUT")
-	r.Handle("/{namespace}/{key}", withNamespace{delete, false}).Methods("DELETE")
+	r.Handle("/", csrfHandler{http.HandlerFunc(getNamespaces)}).Methods("GET")
+	r.Handle("/{namespace}/", csrfHandler{withNamespace{getAll, false}}).Methods("GET")
+	r.Handle("/{namespace}/{key}", csrfHandler{withNamespace{getOne, false}}).Methods("GET")
+	r.Handle("/{namespace}/{key}", csrfHandler{withNamespace{put, true}}).Methods("PUT")
+	r.Handle("/{namespace}/{key}", csrfHandler{withNamespace{delete, false}}).Methods("DELETE")
 	http.Handle("/", r)
 }
 
@@ -56,6 +56,13 @@ func getNamespaces(w http.ResponseWriter, r *http.Request) {
 	for _, key := range keys {
 		fmt.Fprintln(w, key.StringID())
 	}
+}
+
+type csrfHandler struct{ h http.Handler }
+
+func (h csrfHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	h.h.ServeHTTP(w, r)
 }
 
 type withNamespace struct {
