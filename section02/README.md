@@ -198,7 +198,7 @@ to your handlers such as:
 
 These cases can be handled either by hand or using a toolkit that will plug
 correctly into the existing `net/http` package, such as the
-[Gorilla toolkit](https://www.gorillatoolkit.org/) and its `mux` package.
+[Gorilla toolkit](http://www.gorillatoolkit.org/) and its `mux` package.
 
 
 ```go
