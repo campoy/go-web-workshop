@@ -120,4 +120,5 @@ func init() {
 	http.HandleFunc("/incomplete", incompleteHandler)
 	http.HandleFunc("/query", queryHandler)
 	http.HandleFunc("/chainedQuery", chainedQueryHandler)
+	http.HandleFunc("/get", getHandler)
 }
