@@ -6,11 +6,10 @@ Before we start writing web servers let's analyze a simple Go program.
 ```go
 package main
 
-import "fmt"
+import    "fmt"
 
-func main() {
-	fmt.Println("hello, world!")
-}
+func         main() {
+	fmt.Println("hello, world!")        }
 ```
 
 You should be able to understand every line of this program.
