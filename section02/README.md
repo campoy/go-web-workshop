@@ -20,7 +20,7 @@ method which makes it satisfy the `io.Writer` interface.
 
 Let's see a very simple HTTP handler that simply writes `"Hello, web"` to the output:
 
-[embedmd]:# (examples/step1.go /package main/ $)
+[embedmd]:# (examples/step1/main.go /package main/ /^}/)
 ```go
 package main
 
@@ -58,7 +58,7 @@ for any other paths in the `"/images/"` subtree.
 
 Let's see how to register our `helloHandler` defined above:
 
-[embedmd]:# (examples/step2.go /package main/ $)
+[embedmd]:# (examples/step2/main.go /package main/ $)
 ```go
 package main
 
@@ -81,7 +81,7 @@ Note that we're registering our handler as part of the `main` function.
 Try to run the code above:
 
 ```bash
-$ go run examples/step2.go
+$ go run examples/step2/main.go
 ```
 
 What happens? Well, we're missing the last piece of the puzzle: starting the
@@ -150,7 +150,7 @@ when no error has occurred the returned value equals to `nil`.
 So if we want to check that our server started successfully and log an error
 otherwise we would modify our code to add a call to `ListenAndServe`.
 
-[embedmd]:# (examples/step3.go /package main/ $)
+[embedmd]:# (examples/step3/main.go /package main/ $)
 ```go
 package main
 
@@ -225,6 +225,7 @@ func addProduct(w http.ResponseWriter, r *http.Request) {
 
 func getProduct(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["productID"]
+	log.Printf("fetching product with ID %q", id)
 	// get a specific product
 }
 

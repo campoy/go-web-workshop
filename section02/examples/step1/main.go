@@ -21,3 +21,6 @@ import (
 func helloHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Hello, web")
 }
+
+// This doesn't appear on the markdown docs.
+func main() {}
