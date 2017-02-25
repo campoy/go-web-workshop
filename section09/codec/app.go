@@ -55,14 +55,15 @@ func get(w http.ResponseWriter, r *http.Request) {
 
 	var p Person
 	_, err := memcache.JSON.Get(ctx, "last_person", &p)
-	switch err {
-	case nil:
+	if err == nil {
 		json.NewEncoder(w).Encode(p)
-	case memcache.ErrCacheMiss:
-		fmt.Fprint(w, "key not found")
-	default:
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
+	if err == memcache.ErrCacheMiss {
+		fmt.Fprint(w, "key not found")
+		return
+	}
+	http.Error(w, err.Error(), http.StatusInternalServerError)
 }
 
 func init() {

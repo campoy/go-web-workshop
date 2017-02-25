@@ -11,31 +11,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package app
+package main
 
 import (
 	"fmt"
 	"net/http"
-
-	"google.golang.org/appengine"
-	"google.golang.org/appengine/urlfetch"
 )
 
-func init() {
-	http.HandleFunc("/", handler)
+type textHandler struct {
+	h http.HandlerFunc
 }
 
-func handler(w http.ResponseWriter, r *http.Request) {
-	// first create a new context
-	c := appengine.NewContext(r)
-	// and use that context to create a new http client
-	client := urlfetch.Client(c)
+func (t textHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	// Set the content type
+	w.Header().Set("Content-Type", "text/plain")
+	// Then call ServeHTTP in the decorated handler.
+	t.h(w, r)
+}
 
-	// now we can use that http client as before
-	res, err := client.Get("http://google.com")
-	if err != nil {
-		http.Error(w, fmt.Sprintf("could not get google: %v", err), http.StatusInternalServerError)
-		return
-	}
-	fmt.Fprintf(w, "Got Google with status %s\n", res.Status)
+func helloHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "hello")
+}
+
+func main() {
+	http.Handle("/hello", textHandler{helloHandler})
+	http.ListenAndServe(":8080", nil)
 }

@@ -61,40 +61,27 @@ func Put(c appengine.Context, key *Key, src interface{}) (*Key, error)
 - The first parameter is an `appengine.Context` which is the way we link all the
 operations that are related to a given request together.
 
-- The second parameter is a ```*datastore.Key``` and you can see how to create
+- The second parameter is a `*datastore.Key` and you can see how to create
 one in the code snippet below.
 
 - Finally, the last parameter is the value to be stored.
 
-- The function returns another ```*datastore.Key``` and an error which will be
+- The function returns another `*datastore.Key` and an error which will be
 non nil if some error occurs while storing the data.
 
 Let's see an example of how to use the `datastore.Put` function:
 
+
+[embedmd]:# (examples/app.go /func incomplete/ /^}/)
 ```go
-package app
-
-import (
-	"fmt"
-	"net/http"
-
-	"google.golang.org/appengine"
-	"google.golang.org/appengine/datastore"
-)
-
-// Person contains the name and age of a person.
-type Person struct {
-	Name     string
-	AgeYears int
-}
-
-func handler(w http.ResponseWriter, r *http.Request) {
-	p := &Person{Name: "gopher", AgeYears: 5}
-
+func incompleteHandler(w http.ResponseWriter, r *http.Request) {
 	// create a new App Engine context from the HTTP request.
 	ctx := appengine.NewContext(r)
-	// create a new complete key of kind Person and value gopher.
-	key := datastore.NewKey(ctx, "Person", "gopher", 0, nil)
+
+	p := &Person{Name: "gopher", AgeYears: 5}
+
+	// create a new complete key of kind Person.
+	key := datastore.NewIncompleteKey(ctx, "Person", nil)
 	// put p in the datastore.
 	key, err := datastore.Put(ctx, key, p)
 	if err != nil {
@@ -138,12 +125,14 @@ Note that there's no `stringID` or `intID` in this function, as the final value
 of the key will be decided once we put the value in the datastore. The final
 value can be obtained by using the returned key by `datastore.Put`.
 
+[embedmd]:# (examples/app.go /func incompleteHandler/ /^}/)
 ```go
-func handler(w http.ResponseWriter, r *http.Request) {
-	p := &Person{"gopher", 5}
-
+func incompleteHandler(w http.ResponseWriter, r *http.Request) {
 	// create a new App Engine context from the HTTP request.
 	ctx := appengine.NewContext(r)
+
+	p := &Person{Name: "gopher", AgeYears: 5}
+
 	// create a new complete key of kind Person.
 	key := datastore.NewIncompleteKey(ctx, "Person", nil)
 	// put p in the datastore.
@@ -190,15 +179,20 @@ func Get(c appengine.Context, key *Key, dst interface{}) error
 The last parameter should be a pointer to a struct containing the fields that we
 want to retrieve, for instance:
 
+[embedmd]:# (examples/app.go /func getHandler/ /^}/)
 ```go
-ctx := appengine.NewContext(r)
+func getHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := appengine.NewContext(r)
 
-key := datastore.NewKey(ctx, "Person", "gopher", 0, nil)
+	key := datastore.NewKey(ctx, "Person", "gopher", 0, nil)
 
-var p Person
-err := datastore.Get(ctx, key, &p)
-if err != nil {
-	// handle the error
+	var p Person
+	err := datastore.Get(ctx, key, &p)
+	if err != nil {
+		http.Error(w, "Person not found", http.StatusNotFound)
+		return
+	}
+	fmt.Fprintln(w, p)
 }
 ```
 
@@ -263,26 +257,42 @@ all the results matching the query.
 Let's see an example where we retrieve all the values of _kind_ `Person` that
 are 10 years old or younger ordered by their name.
 
+[embedmd]:# (examples/app.go /queryHandler/ /^}/)
 ```go
-ctx := appengine.NewContext(r)
+queryHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := appengine.NewContext(r)
 
-var p []Person
+	var p []Person
 
-// create a new query on the kind Person
-q := datastore.NewQuery("Person")
+	// create a new query on the kind Person
+	q := datastore.NewQuery("Person")
 
-// select only values where field Age is 10 or lower
-q = q.Filter("Age <=", 10)
+	// select only values where field Age is 10 or lower
+	q = q.Filter("Age <=", 10)
 
-// order all the values by the Name field
-q = q.Order("Name")
+	// order all the values by the Name field
+	q = q.Order("Name")
 
-// and finally execute the query retrieving all values into p.
-_, err := q.GetAll(ctx, &p)
-if err != nil {
-	// handle the error
+	// and finally execute the query retrieving all values into p.
+	_, err := q.GetAll(ctx, &p)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	fmt.Fprintln(w, p)
 }
 ```
+
+Note that `Filter` and `Order` return a `*datastore.Query`. This means you can
+chain those operations into a single expression.
+
+[embedmd]:# (examples/app.go /q :=.*\.$/ /^$/)
+```go
+q := datastore.NewQuery("Person").
+		Filter("Age <=", 10).
+		Order("Name")
+```
+
 
 You can find more information about Datastore Query
 [here](https://cloud.google.com/appengine/docs/go/datastore/queries).

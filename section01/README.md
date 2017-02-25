@@ -16,21 +16,23 @@ But before that it is important to realize that there's helper functions that wi
 
 One of those helper functions is [`Get`](https://golang.org/pkg/net/http#Get).
 
+[embedmd]:# (examples/get.go /package main/ $)
 ```go
 package main
 
 import (
-        "fmt"
-        "log"
-        "net/http"
+	"fmt"
+	"log"
+	"net/http"
 )
 
 func main() {
-        res, err := http.Get("https://golang.org")
-        if err != nil {
-                log.Fatal(err)
-        }
-        fmt.Println(res.Status)
+	// try changing the value of this url
+	res, err := http.Get("https://golang.org")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(res.Status)
 }
 ```
 [source code](examples/get.go)
@@ -84,6 +86,7 @@ For instance, we can create the equivalent request to the original `get.go` prog
 
 The `Client` type exposes the `Do` method that send the given `Request` and returns a `Response` and an `error`.
 
+[embedmd]:# (examples/do-get.go /package main/ $)
 ```go
 package main
 
@@ -121,7 +124,7 @@ Replace `YourName` with your name, or something unique that no one else might be
 This will save whatever string you send in the Body of the request so you can retrieve it later with:
 
 ```
-    $ curl https://http-methods.appspot.com/YourName/Message
+$ curl https://http-methods.appspot.com/YourName/Message
 ```
 
 ## Parameters: queries and forms

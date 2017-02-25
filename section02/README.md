@@ -20,6 +20,7 @@ method which makes it satisfy the `io.Writer` interface.
 
 Let's see a very simple HTTP handler that simply writes `"Hello, web"` to the output:
 
+[embedmd]:# (examples/step1.go /package main/ $)
 ```go
 package main
 
@@ -57,6 +58,7 @@ for any other paths in the `"/images/"` subtree.
 
 Let's see how to register our `helloHandler` defined above:
 
+[embedmd]:# (examples/step2.go /package main/ $)
 ```go
 package main
 
@@ -73,11 +75,14 @@ func main() {
 	http.HandleFunc("/hello", helloHandler)
 }
 ```
+
 Note that we're registering our handler as part of the `main` function.
 
 Try to run the code above:
 
-	$ go run main.go
+```bash
+$ go run examples/step2.go
+```
 
 What happens? Well, we're missing the last piece of the puzzle: starting the
 web server!
@@ -145,6 +150,7 @@ when no error has occurred the returned value equals to `nil`.
 So if we want to check that our server started successfully and log an error
 otherwise we would modify our code to add a call to `ListenAndServe`.
 
+[embedmd]:# (examples/step3.go /package main/ $)
 ```go
 package main
 
@@ -166,8 +172,6 @@ func main() {
 	}
 }
 ```
-
-_Note_: you can find the complete code on [main.go](main.go).
 
 Running this code should now start a web server listening on `127.0.0.1:8080`.
 
@@ -200,12 +204,13 @@ These cases can be handled either by hand or using a toolkit that will plug
 correctly into the existing `net/http` package, such as the
 [Gorilla toolkit](http://www.gorillatoolkit.org/) and its `mux` package.
 
-
+[embedmd]:# (examples/gorilla.go /package main/ $)
 ```go
 package main
 
 import (
-	...
+	"log"
+	"net/http"
 
 	"github.com/gorilla/mux"
 )

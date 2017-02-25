@@ -26,8 +26,8 @@ We would create a type containing the same fields:
 
 ```go
 type Person struct {
-	Name      string
-	AgeYears  int
+	Name     string
+	AgeYears int
 }
 ```
 
@@ -41,6 +41,7 @@ for each Go field.
 
 For instance we would add the following field tags to the previous example:
 
+[embedmd]:# (examples/app.go /type Person/ /^}/)
 ```go
 type Person struct {
 	Name     string `json:"name"`
@@ -51,28 +52,6 @@ type Person struct {
 _Note_: the backticks ```(`)``` are just a different way to write strings in Go.
 They allow you to use double quotes `(")` and to expand across multiple lines.
 
-To declare a new variable of type `Person` we have two options:
-
-- use the `var` keyword and not provide any initial value for its fields,
-
-```go
-	var p Person
-	fmt.Println(p)
-	// output: Person{ 0}
-
-	// a better way to print structs
-	fmt.Printf("%#v\n", p)
-	// output: main.Person{Name:"", AgeYears:0}
-```
-
-- or use the `:=` operator and initialize the fields.
-
-```go
-	p := Person{Name: "gopher", AgeYears: 5}
-	fmt.Printf("%#v\n", p)
-	// output: main.Person{Name:"gopher", AgeYears:5}
-```
-
 For more info on structs read
 [this section](https://tour.golang.org/moretypes/5) of the Go tour.
 
@@ -82,16 +61,9 @@ To encode a Go struct we use a
 [`json.Encoder`](https://golang.org/pkg/encoding/json#Encoder), which provides
 a handy `Encode` method.
 
+[embedmd]:# (examples/app.go /func encode/ /^}/)
 ```go
-package main
-
-import (
-	"encoding/json"
-	"log"
-	"os"
-)
-
-func main() {
+func encode() {
 	p := Person{"gopher", 5}
 
 	// create an encoder that will write on the standard output.
@@ -117,18 +89,9 @@ You can try the code with the `go run` tool, or using the Go playground
 The same way we have a `json.Encoder` we have a `json.Decoder` and its usage
 is very similar.
 
+[embedmd]:# (examples/app.go /func decode/ /^}/)
 ```go
-
-package main
-
-import (
-	"encoding/json"
-	"fmt"
-	"log"
-	"os"
-)
-
-func main() {
+func decode() {
 	// create an empty Person value.
 	var p Person
 
@@ -167,8 +130,9 @@ therefore satisfies the `io.Writer` interface required by `json.NewEncoder`.
 
 So we can easily JSON encode a `Person` on an HTTP response:
 
+[embedmd]:# (examples/app.go /func encodeHandler/ /^}/)
 ```go
-func handler(w http.ResponseWriter, r *http.Request) {
+func encodeHandler(w http.ResponseWriter, r *http.Request) {
 	p := Person{"gopher", 5}
 
 	// set the Content-Type header.
@@ -177,7 +141,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	// encode p to the output.
 	enc := json.NewEncoder(w)
 	err := enc.Encode(p)
-	if  err != nil {
+	if err != nil {
 		// if encoding fails, create an error page with code 500.
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -193,8 +157,9 @@ Since the signature of the method `Read` matches the one in `io.Reader` we can
 say that `io.ReadCloser` is an `io.Reader` and therefore we can use the `Body`
 of a `http.Request` as the input of a `json.Decoder`.
 
+[embedmd]:# (examples/app.go /func decodeHandler/ /^}/)
 ```go
-func handler(w http.ResponseWriter, r *http.Request) {
+func decodeHandler(w http.ResponseWriter, r *http.Request) {
 	var p Person
 
 	dec := json.NewDecoder(r.Body)
@@ -209,8 +174,10 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 If you want to test this handler you can use curl:
 
-	$ curl -d '{"name": "gopher", "age_years": 5}' http://localhost:8080/
-	Name is gopher and age is 5
+```bash
+$ curl -d '{"name": "gopher", "age_years": 5}' http://localhost:8080/
+Name is gopher and age is 5
+```
 
 ## Exercise
 

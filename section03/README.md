@@ -22,9 +22,14 @@ The `http.Request` type has a method `FormValue` with the following docs:
 That's easy! So if we want to obtain the value of a parameter `q` in the URL `/hello?msg=world`
 we can write the next program.
 
+[embedmd]:# (examples/hello_parameter.go /func handler/ /^}/)
 ```go
 func handler(w http.ResponseWriter, r *http.Request) {
-    msg := r.FormValue("msg")
+	name := r.FormValue("name")
+	if name == "" {
+		name = "friend"
+	}
+	fmt.Fprintf(w, "Hello, %s!", name)
 }
 ```
 
@@ -36,13 +41,15 @@ If the `name` is not present it should print `Hello, friend!`.
 You can test it with your own browser, but let's try a couple things with `curl` too.
 Before running these think about what you expect to see and why.
 
-    $ curl "localhost:8080/hello?name=world"
+```bash
+$ curl "localhost:8080/hello?name=world"
 
-    $ curl "localhost:8080/hello?name=world&name=francesc"
+$ curl "localhost:8080/hello?name=world&name=francesc"
 
-    $ curl -X POST -d "name=francesc" "localhost:8080/hello"
+$ curl -X POST -d "name=francesc" "localhost:8080/hello"
 
-    $ curl -X POST -d "name=francesc" "localhost:8080/hello?name=potato"
+$ curl -X POST -d "name=francesc" "localhost:8080/hello?name=potato"
+```
 
 Think about how would you make your program print all the values given to `name`.
 
@@ -66,7 +73,9 @@ If the call to `ioutil.ReadAll` returns an error write that error message to the
 
 You can test your exercise by using `curl`:
 
-    $ curl -X POST -d "francesc" "localhost:8080/hello"
+```bash
+$ curl -X POST -d "francesc" "localhost:8080/hello"
+```
 
 As an extra exercise remove any extra blank spaces surrounding the name.
 
@@ -119,7 +128,7 @@ The answer is that the `net/http` packages guesses that the output is HTML,
 and therefore your browser concatenates the lines. For short outputs, it's hard to guess.
 You can see the content type of your response by adding `-v` to your `curl` command.
 
-```
+```bash
 $ curl -v localhost:8080
 < HTTP/1.1 200 OK
 < Date: Mon, 25 Apr 2016 16:14:46 GMT
@@ -134,8 +143,9 @@ You can set headers in the response with the `Header` function in the `ResponseW
 `Header` returns a [`http.Header`](https://golang.org/pkg/net/http/#Header) which has, among other methods,
 the method `Set`. We can then set the content type in our `ResponseWriter` named `w` like this.
 
+[embedmd]:# (examples/text_handler.go /w.Header.*/)
 ```go
-r.Header().Set("Content-Type", "text/plain")
+w.Header().Set("Content-Type", "text/plain")
 ```
 
 ### Avoiding repetition
@@ -148,29 +158,32 @@ Some people call them decorators, most of them also write Python 😛.
 
 To start we're going to define a new type named `textHandler` that contains a `http.HandlerFunc`.
 
+[embedmd]:# (examples/text_handler.go /type textHandler/ /^}/)
 ```go
 type textHandler struct {
-    h http.HandlerFunc
+	h http.HandlerFunc
 }
 ```
 
 Now we're going to define the `ServeHTTP` method on `textHandler` so it satisfies the `http.Handler` interface.
 
+[embedmd]:# (examples/text_handler.go /.*ServeHTTP/ /^}/)
 ```go
 func (t textHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-   // Set the content type
-   w.Header().Set("Content-Type", "text/plain")
-   // Then call ServeHTTP in the decorated handler.
-   t.h(w, r)
+	// Set the content type
+	w.Header().Set("Content-Type", "text/plain")
+	// Then call ServeHTTP in the decorated handler.
+	t.h(w, r)
 }
 ```
 
 Finally we replace our `http.HandleFunc` calls with `http.Handle`.
 
+[embedmd]:# (examples/text_handler.go /func main/ /^}/)
 ```go
 func main() {
-    http.Handle("/hello", textHandler{helloHandler})
-    http.ListenAndServe(":8080", nil)
+	http.Handle("/hello", textHandler{helloHandler})
+	http.ListenAndServe(":8080", nil)
 }
 ```
 

@@ -1,6 +1,6 @@
-runtime: go
-api_version: go1
+runtime: go                    # the runtime (python, java, go, php)
+api_version: go1               # the runtime version
 
 handlers:
-- url: /.*
-  script: _go_app
+- url: /.*                     # for all requests
+  script: _go_app              # pass the request to the Go code

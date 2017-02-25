@@ -2,14 +2,15 @@
 
 Before we start writing web servers let's analyze a simple Go program.
 
+[embedmd]:# (hello/main.go /package main/ $)
 ```go
 package main
 
 import "fmt"
 
-func   main() {
-    fmt.Println(  "hello, world!"  );
-    }
+func main() {
+	fmt.Println("hello, world!")
+}
 ```
 
 You should be able to understand every line of this program.
@@ -42,18 +43,18 @@ But this doesn't mean you need to write them yourself!
 
 Try deleting the line `import "fmt"` from `main.go` and run it, you should see an error:
 
-```
-    $ go run main.go
-    # command-line-arguments
-    ./main.go:5: undefined: fmt in fmt.Println
+```bash
+$ go run main.go
+# command-line-arguments
+./main.go:5: undefined: fmt in fmt.Println
 ```
 
 You can fix this error by manually adding the missing import statements or using `goimports`.
 
 If you don't have `goimports` installed in your machine you can easily install it by running:
 
-```
-    $ go get golang.org/x/tools/cmd/goimports
+```bash
+$ go get golang.org/x/tools/cmd/goimports
 ```
 
 This will install the `goimports` binary in `$GOAPTH/bin`.

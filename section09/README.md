@@ -53,18 +53,36 @@ type Item struct {
 So if we want to store an item with key "name" and value "gopher" that will be
 valid for one hour we could write:
 
+[embedmd]:# (getset/app.go /package app/ /^}/)
 ```go
-ctx := appengine.NewContext(r)
+package app
 
-item := &memcache.Item{
-	Key: "name",
-	Value: []byte("gopher"),
-	Expiration: 1 * time.Hour,
-}
+import (
+	"fmt"
+	"net/http"
+	"time"
 
-err := memcache.Set(ctx, item)
-if err != nil {
-	// handle the error
+	"google.golang.org/appengine"
+	"google.golang.org/appengine/memcache"
+)
+
+func set(w http.ResponseWriter, r *http.Request) {
+	ctx := appengine.NewContext(r)
+
+	// get the parameters k and v from the request
+	key := r.FormValue("k")
+	value := r.FormValue("v")
+
+	item := &memcache.Item{
+		Key:        key,
+		Value:      []byte(value),
+		Expiration: 1 * time.Hour,
+	}
+
+	err := memcache.Set(ctx, item)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 ```
 
@@ -82,18 +100,22 @@ returned error is `memcache.ErrCacheMiss`.
 
 Let's retrieve the value we cached on the previous code:
 
+[embedmd]:# (getset/app.go /func get/ /^}/)
 ```go
-ctx := appengine.NewContext(r)
+func get(w http.ResponseWriter, r *http.Request) {
+	ctx := appengine.NewContext(r)
 
-item, err := memcache.Get(ctx, "name")
-switch err {
-case nil:
-	fmt.Fprintln(w, "name is %s", item.Value)
-case memcache.ErrCacheMiss:
-	// the key was not found, this could be fine
-	return
-default:
-	// there was an actual error, is Memcache down?
+	key := r.FormValue("k")
+
+	item, err := memcache.Get(ctx, key)
+	switch err {
+	case nil:
+		fmt.Fprintf(w, "%s", item.Value)
+	case memcache.ErrCacheMiss:
+		fmt.Fprint(w, "key not found")
+	default:
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 ```
 
@@ -111,29 +133,50 @@ When using codecs rather than setting the `Value` field of the `memcache.Item`
 you should use the `Object` field instead. For instance you can cache and
 retrieve a `Person` using the JSON codec like this:
 
+[embedmd]:# (codec/app.go /func set/ /^}/)
 ```go
-p := Person{
-	Name: "gopher",
-	AgeYears: 5,
-}
+func set(w http.ResponseWriter, r *http.Request) {
+	ctx := appengine.NewContext(r)
 
-item := &memcache.Item{
-	Key:        "last_person",
-	Value:      p,
-	Expiration: 1 * time.Hour,
-}
+	var p Person
+	if err := json.NewDecoder(r.Body).Decode(&p); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 
-// we use the JSON codec
-err := memcache.JSON.Set(ctx, item)
-// handle the error
+	item := &memcache.Item{
+		Key:        "last_person",
+		Object:     p, // we set the Object field instead of Value
+		Expiration: 1 * time.Hour,
+	}
+
+	// we use the JSON codec
+	err := memcache.JSON.Set(ctx, item)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
 ```
 
 And to retrieve it it's even simpler:
 
+[embedmd]:# (codec/app.go /func get/ /^}/)
 ```go
-var p Person
-_, err := memcache.JSON.Get(ctx, "last_person", &p)
-// handle the error
+func get(w http.ResponseWriter, r *http.Request) {
+	ctx := appengine.NewContext(r)
+
+	var p Person
+	_, err := memcache.JSON.Get(ctx, "last_person", &p)
+	if err == nil {
+		json.NewEncoder(w).Encode(p)
+		return
+	}
+	if err == memcache.ErrCacheMiss {
+		fmt.Fprint(w, "key not found")
+		return
+	}
+	http.Error(w, err.Error(), http.StatusInternalServerError)
+}
 ```
 
 You can see a complete example of an application using the JSON code
