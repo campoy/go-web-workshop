@@ -1,4 +1,4 @@
-// Copyright 2016 Google Inc. All rights reserved.
+// Copyright 2017 Google Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -55,14 +55,15 @@ func get(w http.ResponseWriter, r *http.Request) {
 
 	var p Person
 	_, err := memcache.JSON.Get(ctx, "last_person", &p)
-	switch err {
-	case nil:
+	if err == nil {
 		json.NewEncoder(w).Encode(p)
-	case memcache.ErrCacheMiss:
-		fmt.Fprint(w, "key not found")
-	default:
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
+	if err == memcache.ErrCacheMiss {
+		fmt.Fprint(w, "key not found")
+		return
+	}
+	http.Error(w, err.Error(), http.StatusInternalServerError)
 }
 
 func init() {

@@ -41,6 +41,7 @@ manage that for you.
 
 This simplifies the code we had before:
 
+[embedmd]:# (examples/hello.go /package hello/ $)
 ```go
 package hello
 
@@ -82,6 +83,7 @@ $ go get -u google.golang.org/appengine/...
 
 To create a new `appengine.Context` we need to call `appengine.NewContext` and pass an HTTP request.
 
+[embedmd]:# (app/app.go /package app/ $)
 ```go
 package app
 
@@ -98,13 +100,13 @@ func init() {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-    // first create a new context
+	// first create a new context
 	c := appengine.NewContext(r)
-    // and use that context to create a new http client
+	// and use that context to create a new http client
 	client := urlfetch.Client(c)
 
-    // now we can use that http client as before
-	res, err := client.Get("https://google.com")
+	// now we can use that http client as before
+	res, err := client.Get("http://google.com")
 	if err != nil {
 		http.Error(w, fmt.Sprintf("could not get google: %v", err), http.StatusInternalServerError)
 		return
@@ -124,6 +126,7 @@ to what we did with `HandleFunc`.
 
 This would be the `app.yaml` file for our Hello, App Engine application.
 
+[embedmd]:# (app/app.yaml)
 ```yaml
 runtime: go                    # the runtime (python, java, go, php)
 api_version: go1               # the runtime version
@@ -139,12 +142,16 @@ Once we have the `main.go` and `app.yaml` files in a directory we can run the
 application locally by going to the directory and executing the `goapp` tool
 that comes with the Go SDK for App Engine.
 
-	$ goapp serve .
+```bash
+$ goapp serve .
+```
 
 You will see many logs, check for errors, and if everything works fine you will
 see a message like:
 
-	INFO     2016-08-31 15:21:05,793 dispatcher.py:197] Starting module "default" running at: http://localhost:8080
+```bash
+INFO     2016-08-31 15:21:05,793 dispatcher.py:197] Starting module "default" running at: http://localhost:8080
+```
 
 Visit http://localhost:8080/hello and you should see your beautiful web app
 again.
@@ -167,14 +174,18 @@ That's it! You can now deploy your code to the Google App Engine servers!
 Modify the `app.yaml` changing the `application` line to contain the project ID
 of the project you just created and deploy it running:
 
-	$ goapp deploy --version=1 --application=your-project-id .
+```bash
+$ goapp deploy --version=1 --application=your-project-id .
+```
 
 The first time you run `goapp` it will open a browser and go through the
 authentication and authorization process, this will happen only once.
 
 If for some reason you need to do this again you can remove the auth info:
 
-	$ rm -f ~/.appcfg_oauth2_tokens
+```bash
+$ rm -f ~/.appcfg_oauth2_tokens
+```
 
 Once this succeeds your app is available on https://your-project-id.appspot.com.
 

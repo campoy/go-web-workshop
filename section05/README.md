@@ -7,6 +7,7 @@ make the HTML and JavaScript components communicate with your Go code.
 
 For now let's start with a simple HTML page:
 
+[embedmd]:# (all_static/hello.html /.*DOCTYPE/ $)
 ```html
 <!DOCTYPE html>
 
@@ -22,6 +23,7 @@ For now let's start with a simple HTML page:
 
 We can create a new `app.yaml` to serve this static page:
 
+[embedmd]:# (all_static/app.yaml)
 ```yaml
 runtime: go
 api_version: go1
@@ -45,18 +47,24 @@ There's two solutions for this:
 
 - or add some Go code, something as simple as this `dummy.go` file:
 
+[embedmd]:# (all_static/dummy.go /package dummy/ $)
 ```go
 package dummy
 ```
+
 We will do the latter as we'll add more Go code later on.
 
 Try running your application again:
 
-	$ goapp serve .
+```bash
+$ goapp serve .
+```
 
 Or deploying it:
 
-	$ goapp deploy --application=your-project-id --version=1 .
+```bash
+$ goapp deploy --application=your-project-id --version=1 .
+```
 
 And verify that the output matches your expectations:
 
@@ -86,6 +94,7 @@ We will need three components:
 
 The only part that changes here is the `app.yaml`:
 
+[embedmd]:# (mixed_content/app.yaml)
 ```yaml
 runtime: go
 api_version: go1
@@ -95,7 +104,7 @@ handlers:
 - url: /
   static_files: hello.html
   upload: hello.html
-# requests with the hello path are handled by the Go app.
+# requests with the /api/ path are handled by the Go app.
 - url: /api/.*
   script: _go_app
 ```
@@ -108,6 +117,8 @@ Why does it fail? Fix it.
 This can be done in *many* ways, as many as JavaScript frameworks you can think
 of. For this simple example we will simply use [jQuery](https://jquery.com/).
 
+
+[embedmd]:# (mixed_content/hello.html /.*DOCTYPE/ $)
 ```html
 <!DOCTYPE html>
 
@@ -115,20 +126,14 @@ of. For this simple example we will simply use [jQuery](https://jquery.com/).
 <head>
 	<title>Hello, App Engine</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-	<style>
-	h1 {
-		text-align: center;
-		color: #a74;
-	}
-	</style>
 </head>
 <body>
 	<h1>Hello, App Engine</h1>
 	<p>The backend says: <span id="message"></span></p>
 	<script>
-	$(function() {
-		$('#message').load('/api/hello');
-	});
+		$(function() {
+			$("#message").load("/api/hello");
+		});
 	</script>
 </body>
 </html>
@@ -150,19 +155,22 @@ there's a much simpler option once you put all of them in a single directory.
 
 Your `app.yaml` in this case will look like this:
 
+[embedmd]:# (static_dirs/app.yaml /runtime/ $)
 ```yaml
 runtime: go
 api_version: go1
 
 handlers:
-# requests with the prefix /api/ are handled by the Go app.
+# requests starting with /api/ are handled by the Go app.
 - url: /api/.*
   script: _go_app
-# requests on the root path display index.html.
+
+# if the path is empty show index.html.
 - url: /
   static_files: static/index.html
   upload: static/index.html
-# otherwise we try to find the paths in the static directory..
+
+# otherwise try to find it in the static directory.
 - url: /
   static_dir: static
 ```

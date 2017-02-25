@@ -1,4 +1,4 @@
-// Copyright 2016 Google Inc. All rights reserved.
+// Copyright 2017 Google Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -61,7 +61,64 @@ func incompleteHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "gopher stored with key %v", key)
 }
 
+func getHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := appengine.NewContext(r)
+
+	key := datastore.NewKey(ctx, "Person", "gopher", 0, nil)
+
+	var p Person
+	err := datastore.Get(ctx, key, &p)
+	if err != nil {
+		http.Error(w, "Person not found", http.StatusNotFound)
+		return
+	}
+	fmt.Fprintln(w, p)
+}
+
+func queryHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := appengine.NewContext(r)
+
+	var p []Person
+
+	// create a new query on the kind Person
+	q := datastore.NewQuery("Person")
+
+	// select only values where field Age is 10 or lower
+	q = q.Filter("Age <=", 10)
+
+	// order all the values by the Name field
+	q = q.Order("Name")
+
+	// and finally execute the query retrieving all values into p.
+	_, err := q.GetAll(ctx, &p)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	fmt.Fprintln(w, p)
+}
+
+func chainedQueryHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := appengine.NewContext(r)
+
+	var p []Person
+
+	// create a new query on the kind Person
+	q := datastore.NewQuery("Person").
+		Filter("Age <=", 10).
+		Order("Name")
+
+	// and finally execute the query retrieving all values into p.
+	_, err := q.GetAll(ctx, &p)
+	if err != nil {
+		// handle the error
+	}
+}
+
 func init() {
 	http.HandleFunc("/complete", completeHandler)
 	http.HandleFunc("/incomplete", incompleteHandler)
+	http.HandleFunc("/query", queryHandler)
+	http.HandleFunc("/chainedQuery", chainedQueryHandler)
+	http.HandleFunc("/get", getHandler)
 }

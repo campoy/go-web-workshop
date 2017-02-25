@@ -1,4 +1,4 @@
-// Copyright 2016 Google Inc. All rights reserved.
+// Copyright 2017 Google Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -32,7 +32,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	client := urlfetch.Client(c)
 
 	// now we can use that http client as before
-	res, err := client.Get("https://google.com")
+	res, err := client.Get("http://google.com")
 	if err != nil {
 		http.Error(w, fmt.Sprintf("could not get google: %v", err), http.StatusInternalServerError)
 		return

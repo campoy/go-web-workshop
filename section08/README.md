@@ -18,7 +18,19 @@ func Client(context appengine.Context) *http.Client
 So given an `appengine.Context` you get an HTTP client, and then you can start
 from there. So if you wanted to fetch Google's home page you would do:
 
+[embedmd]:# (fetch/fetch.go /package fetch/ /^}/)
 ```go
+package fetch
+
+import (
+	"io"
+	"net/http"
+
+	"google.golang.org/appengine"
+	"google.golang.org/appengine/log"
+	"google.golang.org/appengine/urlfetch"
+)
+
 func handler(w http.ResponseWriter, r *http.Request) {
 	ctx := appengine.NewContext(r)
 
@@ -29,7 +41,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	res, err := c.Get("https://google.com")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-        return
+		return
 	}
 
 	// we need to close the body at the end of this function
