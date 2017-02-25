@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/campoy/go-web-workshop.svg)](https://travis-ci.org/campoy/go-web-workshop) [![Go Report Card](https://goreportcard.com/badge/github.com/campoy/go-web-workshop)](https://goreportcard.com/report/github.com/campoy/go-web-workshop)
+
 # Building Web Applications with Go
 
 Welcome, gopher! You're not a gopher?
