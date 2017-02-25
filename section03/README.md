@@ -22,9 +22,9 @@ The `http.Request` type has a method `FormValue` with the following docs:
 That's easy! So if we want to obtain the value of a parameter `q` in the URL `/hello?msg=world`
 we can write the next program.
 
-[embedmd]:# (examples/hello_parameter.go /func handler/ /^}/)
+[embedmd]:# (examples/handlers/main.go /func paramHandler/ /^}/)
 ```go
-func handler(w http.ResponseWriter, r *http.Request) {
+func paramHandler(w http.ResponseWriter, r *http.Request) {
 	name := r.FormValue("name")
 	if name == "" {
 		name = "friend"
@@ -63,6 +63,22 @@ closed at the end of the execution of the http handler, so don't worry about it.
 
 There's many ways we can read from an `io.Reader`, but for now you can use `io.ReadAll`,
 which returns a `[]byte` and an `error` if something goes wrong.
+
+[embedmd]:# (examples/handlers/main.go /func bodyHandler/ /^}/)
+```go
+func bodyHandler(w http.ResponseWriter, r *http.Request) {
+	b, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Fprintf(w, "could not read body: %v", err)
+		return
+	}
+	name := string(b)
+	if name == "" {
+		name = "friend"
+	}
+	fmt.Fprintf(w, "Hello, %s!", name)
+}
+```
 
 ### Exercise Hello, body
 
@@ -143,7 +159,7 @@ You can set headers in the response with the `Header` function in the `ResponseW
 `Header` returns a [`http.Header`](https://golang.org/pkg/net/http/#Header) which has, among other methods,
 the method `Set`. We can then set the content type in our `ResponseWriter` named `w` like this.
 
-[embedmd]:# (examples/text_handler.go /w.Header.*/)
+[embedmd]:# (examples/texthandler/main.go /w.Header.*/)
 ```go
 w.Header().Set("Content-Type", "text/plain")
 ```
@@ -158,7 +174,7 @@ Some people call them decorators, most of them also write Python 😛.
 
 To start we're going to define a new type named `textHandler` that contains a `http.HandlerFunc`.
 
-[embedmd]:# (examples/text_handler.go /type textHandler/ /^}/)
+[embedmd]:# (examples/texthandler/main.go /type textHandler/ /^}/)
 ```go
 type textHandler struct {
 	h http.HandlerFunc
@@ -167,7 +183,7 @@ type textHandler struct {
 
 Now we're going to define the `ServeHTTP` method on `textHandler` so it satisfies the `http.Handler` interface.
 
-[embedmd]:# (examples/text_handler.go /.*ServeHTTP/ /^}/)
+[embedmd]:# (examples/texthandler/main.go /.*ServeHTTP/ /^}/)
 ```go
 func (t textHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// Set the content type
@@ -179,7 +195,7 @@ func (t textHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 Finally we replace our `http.HandleFunc` calls with `http.Handle`.
 
-[embedmd]:# (examples/text_handler.go /func main/ /^}/)
+[embedmd]:# (examples/texthandler/main.go /func main/ /^}/)
 ```go
 func main() {
 	http.Handle("/hello", textHandler{helloHandler})

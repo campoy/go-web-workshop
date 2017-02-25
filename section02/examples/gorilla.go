@@ -30,6 +30,7 @@ func addProduct(w http.ResponseWriter, r *http.Request) {
 
 func getProduct(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["productID"]
+	log.Printf("fetching product with ID %q", id)
 	// get a specific product
 }
 
