@@ -7,4 +7,4 @@ go:
 install:
   - go get github.com/campoy/embedmd
 script:
-  - embeddiff=$(embedmd -d **/*.md) && if [[ "$embeddiff" ]]; then echo "$embeddiff"; return 1; fi;
+  - embedmd -d **/*.md
