@@ -19,8 +19,8 @@ import (
 	"net/http"
 	"time"
 
-	"appengine"
-	"appengine/memcache"
+	"google.golang.org/appengine"
+	"google.golang.org/appengine/memcache"
 )
 
 type Person struct {
