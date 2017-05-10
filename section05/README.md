@@ -57,13 +57,13 @@ We will do the latter as we'll add more Go code later on.
 Try running your application again:
 
 ```bash
-$ goapp serve .
+$ dev_appserver.py .
 ```
 
 Or deploying it:
 
 ```bash
-$ goapp deploy --application=your-project-id --version=1 .
+$ gcloud app deploy app.yaml
 ```
 
 And verify that the output matches your expectations:

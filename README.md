@@ -18,7 +18,7 @@ To go through this you will need the following:
 1. You have installed the [Go Programming Language][1].
 1. You have set up a `GOPATH` by following the [How to Write Go Code][9] tutorial.
 1. You are somewhat familiar with the basics of Go. (The [Go Tour][2] is a pretty good place to start)
-1. You have a Google account and you have installed the [Go SDK][3].
+1. You have a Google account and you have installed the [Google Cloud SDK][3].
 
 ## Contents
 
@@ -70,5 +70,5 @@ code that happens to be owned by Google.
 
 [1]: https://golang.org
 [2]: https://tour.golang.org
-[3]: https://cloud.google.com/appengine/downloads#Google_App_Engine_SDK_for_Go
+[3]: https://cloud.google.com/sdk/downloads
 [9]: https://golang.org/doc/code.html#Organization

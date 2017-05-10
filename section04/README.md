@@ -139,11 +139,11 @@ handlers:
 ## Run the application locally
 
 Once we have the `main.go` and `app.yaml` files in a directory we can run the
-application locally by going to the directory and executing the `goapp` tool
+application locally by going to the directory and executing the `dev_appserver.py` tool
 that comes with the Go SDK for App Engine.
 
 ```bash
-$ goapp serve .
+$ dev_appserver.py .
 ```
 
 You will see many logs, check for errors, and if everything works fine you will
@@ -168,6 +168,7 @@ project.
 
 1. Visit https://console.developers.google.com and log in with your credentials.
 1. Click on `create a project` and choose a name and project ID
+1. Run `gcloud init` and choose your recently created project. No need to set Compute zones.
 
 That's it! You can now deploy your code to the Google App Engine servers!
 
@@ -175,19 +176,15 @@ Modify the `app.yaml` changing the `application` line to contain the project ID
 of the project you just created and deploy it running:
 
 ```bash
-$ goapp deploy --version=1 --application=your-project-id .
+$ gcloud app deploy app.yaml
 ```
 
-The first time you run `goapp` it will open a browser and go through the
-authentication and authorization process, this will happen only once.
-
-If for some reason you need to do this again you can remove the auth info:
+Once this succeeds your app is available on https://your-project-id.appspot.com,
+or running:
 
 ```bash
-$ rm -f ~/.appcfg_oauth2_tokens
+$ gcloud app browse
 ```
-
-Once this succeeds your app is available on https://your-project-id.appspot.com.
 
 ### Exercise Deploy to App Engine
 
