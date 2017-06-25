@@ -56,7 +56,7 @@ If you don't have `goimports` installed in your machine you can easily install i
 $ go get golang.org/x/tools/cmd/goimports
 ```
 
-This will install the `goimports` binary in `$GOAPTH/bin`.
+This will install the `goimports` binary in `$GOPATH/bin`.
 It is basically the equivalent to fetching the code from GitHub and then running `go install`.
 
 You can now run `goimports` as a replacement of `gofmt`.
