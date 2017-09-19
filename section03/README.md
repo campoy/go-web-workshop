@@ -19,7 +19,7 @@ The `http.Request` type has a method `FormValue` with the following docs:
 
     FormValue returns the first value for the named component of the query. POST and PUT body parameters take precedence over URL query string values. FormValue calls ParseMultipartForm and ParseForm if necessary and ignores any errors returned by these functions. If key is not present, FormValue returns the empty string. To access multiple values of the same key, call ParseForm and then inspect Request.Form directly.
 
-That's easy! So if we want to obtain the value of a parameter `q` in the URL `/hello?msg=world`
+That's easy! So if we want to obtain the value of a parameter `name` in the URL `/hello?name=francesc`
 we can write the next program.
 
 [embedmd]:# (examples/handlers/main.go /func paramHandler/ /^}/)
